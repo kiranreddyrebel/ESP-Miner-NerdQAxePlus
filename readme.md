@@ -18,6 +18,8 @@
 
 6. **It can only be accessed through** **NerdQaxe++ Access Point (hidden + password protected)**
 
+7. **I added few images with my name in main/displays/images/themes/NerdQaxePlus2 folder, feel free to copy from Original folder back to it**
+
 ---
 
 # ESP-Miner NerdQAxePlus
