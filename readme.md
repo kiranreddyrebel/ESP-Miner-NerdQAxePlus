@@ -9,19 +9,19 @@
 
 # Modified Functions
 
-1. *Added Big Screen support from **"Cenron"** - https://github.com/cenron/ESP-Miner-NerdQAxePlus
+1. **Added Big Screen support from **"Cenron"** - https://github.com/cenron/ESP-Miner-NerdQAxePlus
 
-- Added **Web portal password functionality**
+2. **Added **Web portal password functionality**
 
-- Added **Mac spoofing for WiFi**
+3. **Added **Mac spoofing for WiFi**
 
   > Why I need this because some wifi's have captive portal it only allows internet after recharging through captive portal like in Hostels. So, replacing your Mac with someone who already had recharged will bypass that Captive portal and will get internet.
 
-- **WiFi AP name changed + Hidden SSID + password protected** - so that no other people can access.
+4. **WiFi AP name changed + Hidden SSID + password protected** - so that no other people can access.
 
-- **Removed access to other users connected to Wifi where Nerdqaxe++ is connected.** It will through reject connection.
+5. **Removed access to other users connected to Wifi where Nerdqaxe++ is connected.** It will through reject connection.
 
-- It can only be accessed through **NerdQaxe++ Access Point (hidden + password protected)**
+6. It can only be accessed through **NerdQaxe++ Access Point (hidden + password protected)**
 
 ---
 
