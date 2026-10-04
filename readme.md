@@ -22,7 +22,7 @@
 
 # Before Compiling Change passwords in source code.
 
-1. ** Password for Dashboard: **
+1. ## Password for Dashboard:
 
 const SALT = 'password:';
 const PASSWORD_HASH = 'YOUR_NEW_SHA256_HASH_HERE'; --> To generate sha256 hash type this in terminal -> printf '%s' 'password:admin' | sha256sum # to generate
