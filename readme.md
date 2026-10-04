@@ -9,27 +9,23 @@
 
 # Modified Functions
 
-- **Added Big Screen support** from [Cenron](https://github.com/cenron/ESP-Miner-NerdQAxePlus).
+- Added Big Screen support from **"Cenron"** - https://github.com/cenron/ESP-Miner-NerdQAxePlus
 
-- **Added Web Portal password protection** to restrict access to the dashboard.
+- Added **Web portal password functionality**
 
-- **Added Wi-Fi MAC spoofing.**  
-  This is useful for Wi-Fi networks that use captive portals and require authentication or payment before providing Internet access. For example, in some hostels or shared networks, the MAC address may be associated with an already-authenticated device. This feature allows the NerdQAxe++ to use a specified MAC address when connecting to such networks.
+- Added **Mac spoofing for WiFi**
 
-- **Updated the Wi-Fi Access Point (AP):**
-  - Custom AP name
-  - Hidden SSID
-  - Password protection
-  - AP remains available for local management
+  > Why I need this because some wifi's have captive portal it only allows internet after recharging through captive portal like in Hostels. So, replacing your Mac with someone who already had recharged will bypass that Captive portal and will get internet.
 
-- **Restricted Web Portal access from the upstream Wi-Fi network.**  
-  Users connected to the same external Wi-Fi network as the NerdQAxe++ cannot access the miner's management interface.
+- **WiFi AP name changed + Hidden SSID + password protected** - so that no other people can access.
 
-- **NerdQAxe++ management is available only through its own Access Point**, which is hidden and password protected.
+- **Removed access to other users connected to Wifi where Nerdqaxe++ is connected.** It will through reject connection.
+
+- It can only be accessed through **NerdQaxe++ Access Point (hidden + password protected)**
 
 ---
 
-This is a forked version of the NerdAxe miner, modified for use with the [NerdQAxe+](https://github.com/shufps/qaxe).
+This is a forked version from the **NerdAxe miner** that was modified for using on the [NerdQAxe+](https://github.com/shufps/qaxe).
 
 Credits to the devs:
 - BitAxe devs on OSMU: @skot/ESP-Miner, @ben and @jhonny
