@@ -24,7 +24,7 @@
 
 > **Before compiling:** Change the passwords and other configuration values in the source code.
 
-## Configuration
+## Configuration for Compiling code
 
 ### 1. Password for Dashboard
 
@@ -40,7 +40,7 @@ const PASSWORD_HASH = 'YOUR_NEW_SHA256_HASH_HERE';
 To generate the SHA-256 hash, type this in the terminal:
 
 ```bash
-printf '%s' 'password:admin' | sha256sum
+printf '%s' 'password:admin' | sha256sum   --> "password is admin and SALT is "password:"
 ```
 
 Replace `YOUR_NEW_SHA256_HASH_HERE` with the generated hash.
