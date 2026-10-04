@@ -1,6 +1,10 @@
 
 # ESP-Miner-Nerdaxe++ Firmware
 
+## NerdQaxe++
+
+![NerdQaxe++](/images/nerdqaxe.png)
+
 
 # Modified Functions
 
