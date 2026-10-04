@@ -9,7 +9,7 @@
 
 # Modified Functions
 
-- Added Big Screen support from **"Cenron"** - https://github.com/cenron/ESP-Miner-NerdQAxePlus
+1. *Added Big Screen support from **"Cenron"** - https://github.com/cenron/ESP-Miner-NerdQAxePlus
 
 - Added **Web portal password functionality**
 
