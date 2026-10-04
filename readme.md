@@ -20,6 +20,26 @@
 
 ---
 
+# Before Compiling Change passwords in source code.
+
+1. ** Password for Dashboard: **
+
+const SALT = 'password:';
+const PASSWORD_HASH = 'YOUR_NEW_SHA256_HASH_HERE'; --> To generate sha256 hash type this in terminal -> printf '%s' 'password:admin' | sha256sum # to generate
+
+In file: /main/http_server/axe-os/src/app/services/dashboard-lock.service.ts
+
+
+
+2. ** NerdQaxe++ Access Point **
+
+   /main/network/connect.cpp:182:    snprintf(ssid, 32, "ACCESS-POINT-NAME");
+
+3. ** Access Point Password **
+
+   main/network/connect.cpp:208:    strncpy((char *)wifi_ap_config.ap.password, "admin@123456", sizeof(wifi_ap_config.ap.password) - 1);
+   
+
 This is a forked version from the **NerdAxe miner** that was modified for using on the [NerdQAxe++](https://github.com/shufps/ESP-Miner-NerdQAxePlus).
 
 Credits to the devs:
