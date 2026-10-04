@@ -37,10 +37,10 @@ const SALT = 'password:';
 const PASSWORD_HASH = 'YOUR_NEW_SHA256_HASH_HERE';
 ```
 
-To generate the SHA-256 hash, type this in the terminal:
+To generate the SHA-256 hash, type this in the terminal: --> "password is admin and SALT is "password:"
 
 ```bash
-printf '%s' 'password:admin' | sha256sum   --> "password is admin and SALT is "password:"
+printf '%s' 'password:admin' | sha256sum   
 ```
 
 Replace `YOUR_NEW_SHA256_HASH_HERE` with the generated hash.
