@@ -20,24 +20,64 @@
 
 ---
 
-# Before Compiling Change passwords in source code.
+# ESP-Miner NerdQAxePlus
 
-1. ## Password for Dashboard:
+> **Before compiling:** Change the passwords and other configuration values in the source code.
 
+## Configuration
+
+### 1. Password for Dashboard
+
+**File:**
+
+`/main/http_server/axe-os/src/app/services/dashboard-lock.service.ts`
+
+```cpp
 const SALT = 'password:';
-const PASSWORD_HASH = 'YOUR_NEW_SHA256_HASH_HERE'; --> To generate sha256 hash type this in terminal -> printf '%s' 'password:admin' | sha256sum # to generate
+const PASSWORD_HASH = 'YOUR_NEW_SHA256_HASH_HERE';
+```
 
-In file: /main/http_server/axe-os/src/app/services/dashboard-lock.service.ts
+To generate the SHA-256 hash, type this in the terminal:
 
+```bash
+printf '%s' 'password:admin' | sha256sum
+```
 
+Replace `YOUR_NEW_SHA256_HASH_HERE` with the generated hash.
 
-2. ** NerdQaxe++ Access Point **
+---
 
-   /main/network/connect.cpp:182:    snprintf(ssid, 32, "ACCESS-POINT-NAME");
+### 2. NerdQaxe++ Access Point
 
-3. ** Access Point Password **
+**File:**
 
-   main/network/connect.cpp:208:    strncpy((char *)wifi_ap_config.ap.password, "admin@123456", sizeof(wifi_ap_config.ap.password) - 1);
+`/main/network/connect.cpp`
+
+**Line 182:**
+
+```cpp
+snprintf(ssid, 32, "ACCESS-POINT-NAME");
+```
+
+Change `ACCESS-POINT-NAME` to your desired Access Point name.
+
+---
+
+### 3. Access Point Password
+
+**File:**
+
+`/main/network/connect.cpp`
+
+**Line 208:**
+
+```cpp
+strncpy((char *)wifi_ap_config.ap.password, "admin@123456", sizeof(wifi_ap_config.ap.password) - 1);
+```
+
+Change `admin@123456` to your desired Access Point password.
+
+---
    
 
 This is a forked version from the **NerdAxe miner** that was modified for using on the [NerdQAxe++](https://github.com/shufps/ESP-Miner-NerdQAxePlus).
