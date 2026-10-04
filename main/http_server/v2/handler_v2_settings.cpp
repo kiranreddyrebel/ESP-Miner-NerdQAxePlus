@@ -150,10 +150,13 @@ esp_err_t GET_V2_settings(httpd_req_t *req)
 
     // --- network ---
     {
+        char *wifiMac  = Config::getWifiMac();
         char *hostname = Config::getHostname();
         char *ssid     = Config::getWifiSSID();
+        doc["wifiMac"]  = wifiMac;
         doc["hostname"] = hostname;
         doc["ssid"]     = ssid;
+        free(wifiMac);
         free(hostname);
         free(ssid);
     }
@@ -211,6 +214,9 @@ esp_err_t PATCH_V2_settings(httpd_req_t *req)
     }
     if (doc["wifiPass"].is<const char*>()) {
         Config::setWifiPass(doc["wifiPass"].as<const char*>());
+    }
+    if (doc["wifiMac"].is<const char*>()) {
+    Config::setWifiMac(doc["wifiMac"].as<const char*>());
     }
     if (doc["hostname"].is<const char*>()) {
         Config::setHostname(doc["hostname"].as<const char*>());

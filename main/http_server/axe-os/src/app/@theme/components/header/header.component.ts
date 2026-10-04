@@ -5,6 +5,7 @@ import { SystemService } from '../../../services/system.service';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { IIdentifyV2 } from 'src/app/models/IIdentifyV2';
+import { DashboardLockService } from '../../../services/dashboard-lock.service';
 
 @Component({
   selector: 'ngx-header',
@@ -47,7 +48,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private themeService: NbThemeService,
     private layoutService: LayoutService,
     private breakpointService: NbMediaBreakpointsService,
-    private infoService: SystemService
+    private infoService: SystemService,
+    private dashboardLock: DashboardLockService
   ) {
     this.setPlaceholderLogo();
   }
@@ -162,6 +164,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Save the new state
     localStorage.setItem('sidebarState', this.sidebarState);
 
+    return false;
+  }
+
+  /** Lock the dashboard again (password required to re-enter). */
+  lockDashboard() {
+    this.dashboardLock.lock();
     return false;
   }
 

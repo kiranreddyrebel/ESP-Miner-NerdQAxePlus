@@ -75,6 +75,7 @@ export class EditComponent implements OnInit {
   private rebootRequiredFields = new Set<string>([
     'flipScreen',
     'invertScreen',
+    'wifiMac',
     'hostname',
     'ssid',
     'wifiPass',
@@ -199,6 +200,7 @@ export class EditComponent implements OnInit {
           hostname: [info.hostname, [Validators.required]],
           ssid: [info.ssid, [Validators.required]],
           wifiPass: ['*****'],
+          wifiMac: [info.wifiMac || ''],
 
           coreVoltage: [info.coreVoltage, [Validators.min(info.absMinCoreVoltage || 1005), Validators.max(info.absMaxCoreVoltage || 1400), Validators.required]],
           frequency: [info.frequency, [Validators.required]],
@@ -417,6 +419,7 @@ export class EditComponent implements OnInit {
     // Build v2 payload
     const payload: any = {
       // Network
+      wifiMac: f.wifiMac || '',
       hostname: f.hostname,
       ssid: f.ssid,
       // ASIC

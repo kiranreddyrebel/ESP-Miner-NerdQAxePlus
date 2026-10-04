@@ -10,6 +10,17 @@
         <nb-card>
             <nb-card-header>{{ 'SETTINGS.WIFI_SETTINGS' | translate }}</nb-card-header>
             <nb-card-body>
+            	<div class="form-row">
+    <label for="wifiMac" class="form-label">WiFi MAC Address:</label>
+    <div class="form-control-wrapper">
+        <input
+            nbInput
+            id="wifiMac"
+            type="text"
+            formControlName="wifiMac"
+            placeholder="AA:BB:CC:DD:EE:FF" />
+    </div>
+</div>
                 <div class="form-row">
                     <label for="hostname" class="form-label">{{ 'SETTINGS.HOSTNAME' | translate }}:</label>
                     <div class="form-control-wrapper">

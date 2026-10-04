@@ -361,7 +361,7 @@ extern "C" void app_main(void)
         MemoryGuard gUsername(username);
         if (username && username[0] != '\0') {
             // wifi is connected, switch the AP off (no-op if already done by NetworkManager)
-            NETWORK.shutdownApOnce();
+            //NETWORK.shutdownApOnce();
 
             // start the discord alerter early
             discordAlerter.start();

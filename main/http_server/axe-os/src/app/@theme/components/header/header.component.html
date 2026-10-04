@@ -27,6 +27,9 @@
     </nb-action>
     -->
   </nb-actions>
+  <a href="#" class="dr-lock-btn" title="Lock dashboard" (click)="lockDashboard()">
+    <nb-icon icon="lock-outline"></nb-icon>
+  </a>
   <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
     <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>
   </nb-select>

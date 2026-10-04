@@ -1,3 +1,9 @@
+set(FOUND_BLOCK_IMAGE "./displays/images/ui_img_found_block_png.c")
+
+if("$ENV{BOARD}" STREQUAL "NERDQAXEPLUS2")
+    set(FOUND_BLOCK_IMAGE "")
+endif()
+
 idf_component_register(
 SRCS
     "main.cpp"
@@ -91,6 +97,7 @@ SRCS
     "./displays/ui_helpers.cpp"
     "./displays/images/ui_font_DigitalNumbers16.c"
     "./displays/images/ui_font_DigitalNumbers28.c"
+    "./displays/images/ui_font_DigitalNumbers40.c"
     "./displays/images/ui_font_DigitalNumbers16.c"
     "./displays/images/ui_font_OpenSansBold13.c"
     "./displays/images/ui_font_OpenSansBold14.c"
@@ -98,7 +105,7 @@ SRCS
     "./displays/images/ui_font_OpenSansBold45.c"
     "./displays/images/ui_font_vt323_21.c"
     "./displays/images/ui_font_vt323_35.c"
-    "./displays/images/ui_img_found_block_png.c"
+    ${FOUND_BLOCK_IMAGE}
     "./displays/images/ui_img_safe_png.c"
     "./displays/images/ui_img_eth_png.c"
     "./displays/images/ui_img_can_png.c"
@@ -153,6 +160,12 @@ REQUIRES
     "coinbase_decoder"
 
 )
+
+# NerdQAxe++ (NERDQAXEPLUS2) uses the 480x320 "bigscreen" panel: enables the scaled UI,
+# panel settings and the 40px hashrate font in main/displays
+if("$ENV{BOARD}" STREQUAL "NERDQAXEPLUS2")
+    target_compile_definitions(${COMPONENT_LIB} PRIVATE NERDQAXEPLUS2_BIGSCREEN)
+endif()
 
 
 set(WEB_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/http_server/axe-os")

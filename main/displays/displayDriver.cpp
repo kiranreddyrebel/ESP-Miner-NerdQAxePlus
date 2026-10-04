@@ -259,6 +259,10 @@ void DisplayDriver::hideError() {
 
 void DisplayDriver::showFoundBlockOverlay() {
     PThreadGuard lock(m_lvglMutex);
+
+#ifdef NERDQAXEPLUS2_BIGSCREEN
+    return;
+#else
     // hide the overlay and free the memory in case it was open
     m_ui->hideImageOverlay();
 
@@ -271,6 +275,7 @@ void DisplayDriver::showFoundBlockOverlay() {
     m_ui->showImageOverlay(&ui_img_found_block_png);
     m_isActiveOverlay = true;
     refreshScreen();
+#endif
 }
 
 void DisplayDriver::hideFoundBlockOverlay() {
@@ -777,14 +782,24 @@ lv_obj_t *DisplayDriver::initTDisplayS3(void)
     esp_lcd_panel_swap_xy(panel_handle, true);
 
     Board *board = SYSTEM_MODULE.getBoard();
+#ifdef NERDQAXEPLUS2_BIGSCREEN
+    // the big panel is mounted un-mirrored (the bigscreen branch forced mirror(false,false)).
+    // Flipping rotates by 180 degrees, i.e. toggles both axes.
+    if (!board->isFlipScreenEnabled()) {
+        esp_lcd_panel_mirror(panel_handle, false, false);
+    } else {
+        esp_lcd_panel_mirror(panel_handle, true, true);
+    }
+#else
     if (!board->isFlipScreenEnabled()) {
         esp_lcd_panel_mirror(panel_handle, true, false);
     } else {
         esp_lcd_panel_mirror(panel_handle, false, true);
     }
+#endif
 
     // the gap is LCD panel specific, even panels with the same driver IC, can have different gap value
-    esp_lcd_panel_set_gap(panel_handle, 0, 35);
+    esp_lcd_panel_set_gap(panel_handle, 0, TDISPLAYS3_LCD_GAP_Y);
 
     ESP_ERROR_CHECK(esp_lcd_panel_disp_on_off(panel_handle, true));
 

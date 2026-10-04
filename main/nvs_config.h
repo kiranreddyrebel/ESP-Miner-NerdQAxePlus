@@ -7,6 +7,8 @@
 // Max length 15
 #define NVS_CONFIG_WIFI_SSID "wifissid"
 #define NVS_CONFIG_WIFI_PASS "wifipass"
+//to change mac address
+#define NVS_CONFIG_WIFI_MAC  "wifimac"
 #define NVS_CONFIG_HOSTNAME "hostname"
 #define NVS_CONFIG_STRATUM_URL "stratumurl"
 #define NVS_CONFIG_STRATUM_PORT "stratumport"
@@ -166,6 +168,12 @@ namespace Config {
     inline void setMempoolUrl(const char* value) { cfgSetStr(NVS_CONFIG_MEMPOOL_URL, value); }
     inline bool isMempoolCustom() { return cfgGetU16(NVS_CONFIG_MEMPOOL_CUSTOM, 0) != 0; }
     inline void setMempoolCustom(bool v) { cfgSetU16(NVS_CONFIG_MEMPOOL_CUSTOM, v ? 1 : 0); }
+    inline char* getWifiMac() {
+    return cfgGetStrAlloc(NVS_CONFIG_WIFI_MAC, "");
+}
+    inline void setWifiMac(const char* value) {
+    cfgSetStr(NVS_CONFIG_WIFI_MAC, value);
+}
 
     // ---- String Setters ----
     inline void setWifiSSID(const char* value) { cfgSetStr(NVS_CONFIG_WIFI_SSID, value); }
@@ -273,6 +281,7 @@ namespace Config {
         if (ch == 0) cfgSetU16(NVS_CONFIG_PID_D, v);
         else         cfgSetU16(NVS_CONFIG_FAN1_PID_D, v);
     }
+    
 
     // Fan PID: use max(ASIC, VReg) as input instead of ASIC only
     inline bool isFanPidUseMax() { return cfgGetU16(NVS_CONFIG_FAN_PID_USE_MAX, 1) != 0; }

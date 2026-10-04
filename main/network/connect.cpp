@@ -1,7 +1,7 @@
 #include "connect.h"
 
 #include <string.h>
-
+#include "nvs_config.h"
 #include "esp_attr.h"
 #include "esp_event.h"
 #include "esp_log.h"
@@ -179,7 +179,7 @@ static void generate_ssid_impl(char *ssid)
 {
     uint8_t mac[6];
     esp_wifi_get_mac(WIFI_IF_AP, mac);
-    snprintf(ssid, 32, "Nerdaxe_%02X%02X", mac[4], mac[5]);
+    snprintf(ssid, 32, "Kiran");
 }
 
 void generate_ssid(char *ssid)
@@ -201,7 +201,11 @@ static esp_netif_t *wifi_init_softap(void)
     wifi_ap_config.ap.ssid_len = strlen(ssid_with_mac);
     wifi_ap_config.ap.channel = 1;
     wifi_ap_config.ap.max_connection = 30;
-    wifi_ap_config.ap.authmode = WIFI_AUTH_OPEN;
+    //wifi_ap_config.ap.authmode = WIFI_AUTH_OPEN;
+    wifi_ap_config.ap.ssid_hidden = 1;
+    //wifi pass
+    wifi_ap_config.ap.authmode = WIFI_AUTH_WPA2_PSK;
+    strncpy((char *)wifi_ap_config.ap.password, "admin@123456", sizeof(wifi_ap_config.ap.password) - 1);
 
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &wifi_ap_config));
 
@@ -259,6 +263,49 @@ static esp_netif_t *wifi_init_sta(const char *wifi_ssid, const char *wifi_pass)
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_sta_config));
     return esp_netif_sta;
 }
+//mac
+static bool parse_mac_address(const char *str, uint8_t mac[6])
+{
+    if (!str || !str[0]) {
+        return false;
+    }
+
+    unsigned int values[6];
+
+    int count = sscanf(
+        str,
+        "%2x:%2x:%2x:%2x:%2x:%2x",
+        &values[0],
+        &values[1],
+        &values[2],
+        &values[3],
+        &values[4],
+        &values[5]
+    );
+
+    if (count != 6) {
+        return false;
+    }
+
+    for (int i = 0; i < 6; i++) {
+        if (values[i] > 0xFF) {
+            return false;
+        }
+
+        mac[i] = (uint8_t)values[i];
+    }
+
+    /*
+     * Reject multicast MAC addresses.
+     * A WiFi STA MAC must be a unicast address.
+     */
+    if (mac[0] & 0x01) {
+        return false;
+    }
+
+    return true;
+}
+//mac end
 
 esp_netif_t *wifi_init(const char *wifi_ssid, const char *wifi_pass, const char *hostname)
 {
@@ -298,6 +345,43 @@ esp_netif_t *wifi_init(const char *wifi_ssid, const char *wifi_pass, const char 
     }
     if (!s_netif_sta) {
         s_netif_sta = wifi_init_sta(wifi_ssid, wifi_pass);
+    }
+        /*
+     * Optional custom STA MAC.
+     *
+     * Empty setting = use ESP32 factory/default MAC.
+     * Custom setting = override only the STA MAC.
+     */
+    char *custom_mac = Config::getWifiMac();
+
+    if (custom_mac && custom_mac[0] != '\0') {
+        uint8_t mac[6];
+
+        if (parse_mac_address(custom_mac, mac)) {
+            esp_err_t mac_err = esp_wifi_set_mac(WIFI_IF_STA, mac);
+
+            if (mac_err == ESP_OK) {
+                ESP_LOGI(TAG,
+                         "Using custom STA MAC: "
+                         "%02X:%02X:%02X:%02X:%02X:%02X",
+                         mac[0], mac[1], mac[2],
+                         mac[3], mac[4], mac[5]);
+            } else {
+                ESP_LOGE(TAG,
+                         "Failed to set custom STA MAC: %s",
+                         esp_err_to_name(mac_err));
+            }
+        } else {
+            ESP_LOGE(TAG,
+                     "Invalid WiFi MAC address: %s",
+                     custom_mac);
+        }
+    } else {
+        ESP_LOGI(TAG, "Using default ESP32 STA MAC");
+    }
+
+    if (custom_mac) {
+        free(custom_mac);
     }
 
     esp_err_t err = esp_wifi_start();

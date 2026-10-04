@@ -128,10 +128,25 @@ void NetworkManager::shutdownApOnce()
 void NetworkManager::onWifiGotIp()
 {
     m_wifiHasIp = true;
+
     if (m_eg) {
         xEventGroupSetBits(m_eg, NET_WIFI_IP);
     }
-    shutdownApOnce();
+
+    /*
+     * Keep the ESP32 SoftAP running even after STA gets an IP.
+     *
+     * The device remains in WIFI_MODE_APSTA:
+     *
+     *   AP  -> local management web portal
+     *   STA -> upstream/public WiFi
+     *
+     * HTTP access through STA is blocked separately by http_open_cb().
+     */
+
+    ESP_LOGI(TAG_NET,
+             "WiFi STA connected - keeping ESP32 AP enabled");
+
     updateDefaultRoute();
 }
 
@@ -151,7 +166,7 @@ void NetworkManager::onEthGotIp()
         xEventGroupSetBits(m_eg, NET_ETH_IP);
     }
 
-    shutdownApOnce();
+    //shutdownApOnce();
 
     // ETH has an IP -> shut down WiFi STA (no longer needed)
     if (!m_wifiDisabledBecauseEth) {

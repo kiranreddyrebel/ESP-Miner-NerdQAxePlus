@@ -23,6 +23,17 @@
     cursor: pointer;
   }
 
+  .dr-lock-btn {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.9rem;
+    text-decoration: none;
+    color: nb-theme(text-hint-color);
+
+    nb-icon { font-size: 1.5rem; }
+    &:hover { color: nb-theme(color-primary-default); }
+  }
+
   ::ng-deep nb-search button {
     padding: 0!important;
   }

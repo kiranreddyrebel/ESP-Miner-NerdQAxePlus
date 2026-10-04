@@ -1,1 +1,36 @@
-<router-outlet></router-outlet>
+<!-- The real dashboard (and every route behind it) is only created after unlocking. -->
+<router-outlet *ngIf="lock.unlocked; else gate"></router-outlet>
+
+<ng-template #gate>
+  <div class="dr-gate">
+    <div class="dr-card">
+      <div class="dr-logo" aria-label="DonReddy">
+        <span class="dr-logo-don">DON</span><span class="dr-logo-reddy">REDDY</span>
+      </div>
+      <div class="dr-stripe"></div>
+
+      <svg class="dr-lock" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/>
+      </svg>
+      <p class="dr-title">Protected Dashboard</p>
+
+      <input #pw
+             class="dr-input"
+             [class.dr-input--error]="gateError"
+             type="password"
+             placeholder="Enter password"
+             autocomplete="current-password"
+             autofocus
+             (keydown.enter)="submitGate(pw.value)"
+             (input)="gateError = false" />
+
+      <button class="dr-btn" type="button" [disabled]="gateWait > 0"
+              (click)="submitGate(pw.value)">
+        Unlock
+      </button>
+
+      <p class="dr-error" *ngIf="gateError && gateWait === 0">Wrong password. Try again.</p>
+      <p class="dr-error" *ngIf="gateWait > 0">Too many attempts. Wait {{ gateWait }}s.</p>
+    </div>
+  </div>
+</ng-template>

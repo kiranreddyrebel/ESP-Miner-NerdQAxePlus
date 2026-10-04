@@ -69,6 +69,7 @@ export interface ISettingsV2 {
     pidUseMax: boolean;
 
     // Network
+    wifiMac: string;
     hostname: string;
     ssid: string;
 

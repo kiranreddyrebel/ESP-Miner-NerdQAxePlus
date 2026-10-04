@@ -14,6 +14,7 @@ LV_IMG_DECLARE(ui_img_wifi_png);
 #define LV_FONT_CUSTOM_DECLARE
 LV_FONT_DECLARE(ui_font_DigitalNumbers16);
 LV_FONT_DECLARE(ui_font_DigitalNumbers28);
+LV_FONT_DECLARE(ui_font_DigitalNumbers40);
 LV_FONT_DECLARE(ui_font_OpenSansBold13);
 LV_FONT_DECLARE(ui_font_OpenSansBold14);
 LV_FONT_DECLARE(ui_font_OpenSansBold45);
@@ -23,7 +24,9 @@ LV_FONT_DECLARE(ui_font_vt323_21);
 
 #define TDISPLAYS3_LVGL_TICK_PERIOD_MS 30
 
+#ifndef NERDQAXEPLUS2_BIGSCREEN
 LV_IMG_DECLARE(ui_img_found_block_png);
+#endif
 
 class DisplayDriver;
 

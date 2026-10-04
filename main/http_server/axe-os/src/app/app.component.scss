@@ -1,0 +1,104 @@
+.dr-gate {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(0, 229, 255, 0.14), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(255, 150, 20, 0.12), transparent 45%),
+    #03070d;
+  font-family: 'Open Sans', Arial, sans-serif;
+  z-index: 100000;
+}
+
+.dr-card {
+  width: 100%;
+  max-width: 360px;
+  box-sizing: border-box;
+  padding: 2rem 1.75rem 1.75rem;
+  border-radius: 16px;
+  text-align: center;
+  background: rgba(10, 18, 28, 0.92);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  box-shadow: 0 0 40px rgba(0, 229, 255, 0.12);
+}
+
+.dr-logo {
+  font-size: 2.1rem;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+
+  .dr-logo-don { color: #e8f6ff; margin-right: 0.3em; }
+  .dr-logo-reddy {
+    background: linear-gradient(180deg, #ffd640, #ff4614);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.dr-stripe {
+  height: 4px;
+  margin: 0.6rem auto 1.4rem;
+  width: 80%;
+  border-radius: 2px;
+  transform: skewX(-25deg);
+  background: linear-gradient(90deg, #00e5ff, #ff9614);
+}
+
+.dr-lock {
+  width: 34px;
+  height: 34px;
+  fill: #00e5ff;
+  filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.6));
+}
+
+.dr-title {
+  margin: 0.5rem 0 1.1rem;
+  color: #b8c7d6;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.dr-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  background: #050c14;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+
+  &:focus { border-color: #00e5ff; box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.18); }
+  &.dr-input--error { border-color: #ff4646; box-shadow: 0 0 0 3px rgba(255, 70, 70, 0.18); }
+}
+
+.dr-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border: 0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #021018;
+  cursor: pointer;
+  background: linear-gradient(90deg, #00e5ff, #ff9614);
+
+  &:hover:not(:disabled) { filter: brightness(1.1); }
+  &:disabled { opacity: 0.45; cursor: not-allowed; }
+}
+
+.dr-error {
+  margin: 0.9rem 0 0;
+  color: #ff6b6b;
+  font-size: 0.85rem;
+}

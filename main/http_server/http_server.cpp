@@ -1,3 +1,7 @@
+#include "connect.h"
+
+#include <lwip/sockets.h>
+#include <lwip/inet.h>
 
 #include "esp_http_server.h"
 #include "esp_log.h"
@@ -117,12 +121,169 @@ static void http_close_cb(void* hd, int sockfd)
         (void)close(sockfd);
     }
 }
+//Modified
 
-static esp_err_t http_open_cb(void* hd, int sockfd) {
+static esp_err_t http_open_cb(void* hd, int sockfd)
+{
+    (void) hd;
+
     ESP_LOGD(TAG, "http_open_cb: %d", sockfd);
+
+    /*
+     * The HTTP server normally listens on all interfaces.
+     *
+     * In APSTA mode that means it can potentially accept connections
+     * through:
+     *
+     *     1. ESP32 SoftAP
+     *     2. ESP32 STA
+     *
+     * We only want the management web server available through the
+     * ESP32 SoftAP.
+     *
+     * Therefore determine the LOCAL/destination address of this TCP
+     * connection and compare it with the SoftAP IP address.
+     */
+
+    esp_netif_t *ap_netif = wifi_get_ap_netif();
+
+    if (!ap_netif) {
+        ESP_LOGW(TAG,
+                 "AP netif not available - rejecting HTTP connection");
+
+        return ESP_FAIL;
+    }
+
+    esp_netif_ip_info_t ap_ip_info;
+
+    memset(&ap_ip_info, 0, sizeof(ap_ip_info));
+
+    esp_err_t err = esp_netif_get_ip_info(ap_netif, &ap_ip_info);
+
+    if (err != ESP_OK) {
+        ESP_LOGW(TAG,
+                 "Unable to get AP IP info: %s",
+                 esp_err_to_name(err));
+
+        return ESP_FAIL;
+    }
+
+    struct sockaddr_storage local_addr;
+    socklen_t local_addr_len = sizeof(local_addr);
+
+    memset(&local_addr, 0, sizeof(local_addr));
+
+    if (getsockname(
+            sockfd,
+            reinterpret_cast<struct sockaddr *>(&local_addr),
+            &local_addr_len) < 0) {
+
+        ESP_LOGW(TAG,
+                 "getsockname() failed - rejecting HTTP connection");
+
+        return ESP_FAIL;
+    }
+
+    /*
+     * ESP-IDF/lwIP may expose the socket as AF_INET or as an
+     * IPv4-mapped AF_INET6 address.
+     */
+    uint32_t local_ipv4 = 0;
+    bool have_ipv4 = false;
+
+    if (local_addr.ss_family == AF_INET) {
+
+        const struct sockaddr_in *addr =
+            reinterpret_cast<const struct sockaddr_in *>(&local_addr);
+
+        local_ipv4 = addr->sin_addr.s_addr;
+        have_ipv4 = true;
+
+    } else if (local_addr.ss_family == AF_INET6) {
+
+        const struct sockaddr_in6 *addr =
+            reinterpret_cast<const struct sockaddr_in6 *>(&local_addr);
+
+        /*
+         * IPv4-mapped IPv6:
+         *
+         * ::ffff:a.b.c.d
+         */
+        const uint32_t *words = addr->sin6_addr.un.u32_addr;
+
+        if (words[0] == 0 &&
+            words[1] == 0 &&
+            ntohl(words[2]) == 0x0000FFFF) {
+
+            local_ipv4 = words[3];
+            have_ipv4 = true;
+        }
+    }
+
+    if (!have_ipv4) {
+
+        ESP_LOGW(TAG,
+                 "HTTP connection is not IPv4 - rejecting");
+
+        return ESP_FAIL;
+    }
+
+    char local_ip_str[INET_ADDRSTRLEN] = {0};
+    char ap_ip_str[INET_ADDRSTRLEN] = {0};
+
+    inet_ntop(
+        AF_INET,
+        &local_ipv4,
+        local_ip_str,
+        sizeof(local_ip_str));
+
+    inet_ntop(
+        AF_INET,
+        &ap_ip_info.ip.addr,
+        ap_ip_str,
+        sizeof(ap_ip_str));
+
+    /*
+     * This is the key check.
+     *
+     * Example:
+     *
+     *     Client -> http://192.168.4.1
+     *
+     *     local_ipv4 = 192.168.4.1
+     *     AP IP      = 192.168.4.1
+     *
+     *     -> ALLOW
+     *
+     *
+     *     Client -> http://192.168.1.50
+     *
+     *     local_ipv4 = 192.168.1.50
+     *     AP IP      = 192.168.4.1
+     *
+     *     -> REJECT
+     */
+
+    if (local_ipv4 != ap_ip_info.ip.addr) {
+
+        ESP_LOGW(
+            TAG,
+            "Rejecting HTTP connection on non-AP interface: "
+            "local=%s AP=%s",
+            local_ip_str,
+            ap_ip_str);
+
+        return ESP_FAIL;
+    }
+
+    ESP_LOGD(
+        TAG,
+        "Accepting HTTP connection on ESP32 AP: %s",
+        ap_ip_str);
+
     return ESP_OK;
 }
-
+//till here
 esp_err_t start_rest_server(void * pvParameters)
 {
     const char *base_path = "";
