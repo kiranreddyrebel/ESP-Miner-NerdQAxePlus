@@ -1,10 +1,5 @@
 
-# ESP-Miner-Nerdaxe version
-
-| Supported Targets | ESP32-S3              |
-| ----------------- | --------------------- |
-| Required Platform | >= ESP-IDF v5.3.X       |
-| ----------------- | --------------------- |
+# ESP-Miner-Nerdaxe++ Firmware
 
 
 # Modified Functions
@@ -25,7 +20,7 @@
 
 ---
 
-This is a forked version from the **NerdAxe miner** that was modified for using on the [NerdQAxe+](https://github.com/shufps/qaxe).
+This is a forked version from the **NerdAxe miner** that was modified for using on the [NerdQAxe++](https://github.com/shufps/ESP-Miner-NerdQAxePlus).
 
 Credits to the devs:
 - BitAxe devs on OSMU: @skot/ESP-Miner, @ben and @jhonny
