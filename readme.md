@@ -3,7 +3,7 @@
 
 ## NerdQaxe++
 
-![NerdQaxe++](/images/nerdqaxe.png)
+![NerdQaxe++](/images/nerdqaxe.jpeg)
 
 
 # Modified Functions
